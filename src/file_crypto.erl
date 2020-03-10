@@ -9,7 +9,7 @@
 %% limitations under the License.
 %%
 %% @author Marc Igeleke
-%% @copyright 2019 Marc Igeleke
+%% @copyright 2020 Marc Igeleke
 %% @doc Crypto helper function to use on files. 
 
 -module(file_crypto).
@@ -40,7 +40,7 @@
 
 %% @doc Computes a message digest of type `Type' from `File'.
 %% May raise exception error:notsup in case the chosen Type is not supported by the underlying libcrypto implementation.
--spec hash(Type, File) -> binary() | {error, Reason} when
+-spec hash(Type, File) -> {ok, binary()} | {error, Reason} when
       File :: filename_all(),
       Type :: hash_algorithm(),
       Reason ::  posix() | badarg.
@@ -60,7 +60,7 @@ do_digest(IoDevice, Context) ->
 	    do_digest(IoDevice, crypto:hash_update(Context, Data));
 	eof ->
 	    file:close(IoDevice),
-	    crypto:hash_final(Context);
+	    {ok, crypto:hash_final(Context)};
 	Err -> Err
     end.
 
@@ -70,7 +70,9 @@ do_digest(IoDevice, Context) ->
 hash_test_() ->
     ?_assert([begin
 		 if N < 10 -> 48 + N; true -> 87 + N end
-	     end || <<N:4>> <= file_crypto:hash(md5,"test/md5.gif")]
+	     end || <<N:4>> <= begin
+	     {ok,Binary} = file_crypto:hash(md5,"test/md5.gif"),
+	     Binary end]
 	    =:= "f5ca4f935d44b85c431a8bf788c0eaca").
 
 -endif.

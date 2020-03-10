@@ -11,7 +11,7 @@
 
 <h1>Module file_crypto</h1>
 <ul class="index"><li><a href="#description">Description</a></li><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>Crypto helper function to use on files.
-<p>Copyright © 2019 Marc Igeleke</p>
+<p>Copyright © 2020 Marc Igeleke</p>
 
 <p><b>Authors:</b> Marc Igeleke.</p>
 
@@ -58,7 +58,7 @@
 
 <h3 class="function"><a name="hash-2">hash/2</a></h3>
 <div class="spec">
-<p><tt>hash(Type, File) -&gt; binary() | {error, Reason}</tt>
+<p><tt>hash(Type, File) -&gt; {ok, binary()} | {error, Reason}</tt>
 <ul class="definitions"><li><tt>File = <a href="#type-filename_all">filename_all()</a></tt></li><li><tt>Type = <a href="#type-hash_algorithm">hash_algorithm()</a></tt></li><li><tt>Reason = <a href="#type-posix">posix()</a> | badarg</tt></li></ul></p>
 </div><p>Computes a message digest of type <code>Type</code> from <code>File</code>.
   May raise exception error:notsup in case the chosen Type is not supported by the underlying libcrypto implementation.</p>
